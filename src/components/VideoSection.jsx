@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import videoSrc from '../assets/yoga-sanctuary-video.mp4';
+import posterImg from '../assets/video-poster-warrior.jpg';
 
 export default function VideoSection() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -113,7 +114,7 @@ export default function VideoSection() {
               src={videoSrc}
               playsInline
               loop
-              poster="https://lh3.googleusercontent.com/aida-public/AB6AXuDjYvgZPdFRnU36ODpisPAaNR-UOArTPkWM7UCB0MeUPZ1wnA0Yv8DkbkwTu7j0wqQjA3cwnJBMFQB_yHwGuhZz5_RaBVjpnZ9wi0vDV-cwguEJWx6xSALkBvvxVY1FKtnAJr70ahxu8OwYvQysdCsyKoVQtizFvI-Ry5Qbis7CjOnwRS5iCdRZEXEIXuyN1PrGEmbk3ysX9CJsRLgPO8qrtuHxOf-eiRE6-WEUa8oTj5z36ZLe40Lw"
+              poster={posterImg}
               onPlay={() => setIsPlaying(true)}
               onPause={() => setIsPlaying(false)}
               onTimeUpdate={handleTimeUpdate}
