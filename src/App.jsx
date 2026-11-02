@@ -7,6 +7,7 @@ import InstructorsSection from './components/InstructorsSection';
 import AtelierSection from './components/AtelierSection';
 import VideoSection from './components/VideoSection';
 import MembershipSection from './components/MembershipSection';
+import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
 import BookingModal from './components/BookingModal';
 
@@ -57,6 +58,8 @@ export default function App() {
         <VideoSection />
 
         <MembershipSection onSelectPlan={(plan) => handleOpenBooking({ title: `${plan.title} Membership Tier` })} />
+
+        <ContactSection />
       </main>
 
       <Footer />

@@ -14,9 +14,15 @@ export default function Footer() {
             <p className="font-serif-luxury italic text-base text-sanctuary-muted max-w-sm leading-relaxed mb-6">
               A mindful movement sanctuary for the sovereign woman. Rooted in ancient rhythm, framed in architectural stillness.
             </p>
-            <div className="flex items-center space-x-2 text-xs tracking-widest uppercase font-medium text-sanctuary-bronze">
+            <div className="flex items-center space-x-2 text-xs tracking-widest uppercase font-medium text-sanctuary-bronze mb-2">
               <span className="material-symbols-outlined text-base">location_on</span>
               <span>The Stone Colonnade, Jaipur Court</span>
+            </div>
+            <div className="flex items-center space-x-2 text-xs tracking-widest uppercase font-medium text-sanctuary-darkOlive">
+              <span className="material-symbols-outlined text-base text-sanctuary-terracotta">call</span>
+              <a href="tel:+919105837321" className="hover:text-sanctuary-terracotta transition-colors font-mono font-bold">
+                +91 91058 37321
+              </a>
             </div>
           </div>
 

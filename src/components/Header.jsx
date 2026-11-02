@@ -36,6 +36,9 @@ export default function Header({ onBookClick, onJoinClick }) {
           <a className="hover:text-sanctuary-terracotta transition-colors" href="#membership">
             Membership
           </a>
+          <a className="hover:text-sanctuary-terracotta transition-colors" href="#contact">
+            Contact
+          </a>
         </nav>
 
         {/* Header Action CTAs */}
@@ -113,6 +116,13 @@ export default function Header({ onBookClick, onJoinClick }) {
               href="#membership"
             >
               Membership
+            </a>
+            <a 
+              onClick={() => setMobileMenuOpen(false)} 
+              className="hover:text-sanctuary-terracotta py-1" 
+              href="#contact"
+            >
+              Contact
             </a>
             <button
               onClick={() => {
