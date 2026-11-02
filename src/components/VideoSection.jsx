@@ -1,26 +1,85 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import videoSrc from '../assets/yoga-sanctuary-video.mp4';
 
 export default function VideoSection() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const [progress, setProgress] = useState(38);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const videoRef = useRef(null);
+  const containerRef = useRef(null);
 
   const togglePlay = () => {
-    setIsPlaying(!isPlaying);
+    if (!videoRef.current) return;
+    if (isPlaying) {
+      videoRef.current.pause();
+    } else {
+      videoRef.current.play().catch(() => {});
+    }
   };
 
   const toggleMute = () => {
+    if (!videoRef.current) return;
+    videoRef.current.muted = !isMuted;
     setIsMuted(!isMuted);
   };
 
-  const handleSeek = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const pos = (e.clientX - rect.left) / rect.width;
-    setProgress(Math.min(100, Math.max(0, Math.round(pos * 100))));
+  const handleTimeUpdate = () => {
+    if (videoRef.current) {
+      setCurrentTime(videoRef.current.currentTime);
+    }
   };
 
+  const handleLoadedMetadata = () => {
+    if (videoRef.current) {
+      setDuration(videoRef.current.duration);
+    }
+  };
+
+  const handleSeek = (e) => {
+    if (!videoRef.current || !duration) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const clickPos = (e.clientX - rect.left) / rect.width;
+    const newTime = Math.max(0, Math.min(duration, clickPos * duration));
+    videoRef.current.currentTime = newTime;
+    setCurrentTime(newTime);
+  };
+
+  const toggleFullscreen = () => {
+    if (!containerRef.current) return;
+    if (!document.fullscreenElement) {
+      containerRef.current.requestFullscreen().catch(() => {});
+      setIsFullscreen(true);
+    } else {
+      document.exitFullscreen().catch(() => {});
+      setIsFullscreen(false);
+    }
+  };
+
+  useEffect(() => {
+    const handleFsChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener('fullscreenchange', handleFsChange);
+    return () => document.removeEventListener('fullscreenchange', handleFsChange);
+  }, []);
+
+  const formatTime = (seconds) => {
+    if (isNaN(seconds) || seconds === 0) return '00:00';
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60);
+    return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+  };
+
+  const progressPercent = duration ? (currentTime / duration) * 100 : 0;
+
   return (
-    <section className="py-24 relative bg-sanctuary-cream/90 border-b border-sanctuary-sandstone/40 overflow-hidden" data-purpose="cinematic-video-feature" id="cinematic-flow">
+    <section 
+      className="py-24 relative bg-sanctuary-cream/90 border-b border-sanctuary-sandstone/40 overflow-hidden" 
+      data-purpose="cinematic-video-feature" 
+      id="cinematic-flow"
+    >
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         {/* Header Row */}
         <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-sanctuary-sandstone/40 pb-6 mb-12">
@@ -41,51 +100,66 @@ export default function VideoSection() {
         </div>
 
         {/* Video Player Container */}
-        <div className="relative rounded-3xl overflow-hidden border-2 border-sanctuary-sandstone/50 shadow-2xl bg-sanctuary-parchment group">
-          {/* Video Poster Aspect Container */}
-          <div className="relative w-full aspect-[16/9] overflow-hidden">
-            <img
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjYvgZPdFRnU36ODpisPAaNR-UOArTPkWM7UCB0MeUPZ1wnA0Yv8DkbkwTu7j0wqQjA3cwnJBMFQB_yHwGuhZz5_RaBVjpnZ9wi0vDV-cwguEJWx6xSALkBvvxVY1FKtnAJr70ahxu8OwYvQysdCsyKoVQtizFvI-Ry5Qbis7CjOnwRS5iCdRZEXEIXuyN1PrGEmbk3ysX9CJsRLgPO8qrtuHxOf-eiRE6-WEUa8oTj5z36ZLe40Lw"
-              alt="Cinematic editorial video of graceful Indian woman in ivory linen performing yoga in sunlit Rajasthani courtyard"
-              className={`w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ${isPlaying ? 'scale-105 filter brightness-95' : ''}`}
+        <div 
+          ref={containerRef}
+          className="relative rounded-3xl overflow-hidden border-2 border-sanctuary-sandstone/50 shadow-2xl bg-sanctuary-parchment group"
+        >
+          {/* Video Aspect Container */}
+          <div className="relative w-full aspect-[16/9] overflow-hidden bg-black">
+            
+            {/* Real HTML5 Video Component */}
+            <video
+              ref={videoRef}
+              src={videoSrc}
+              playsInline
+              loop
+              poster="https://lh3.googleusercontent.com/aida-public/AB6AXuDjYvgZPdFRnU36ODpisPAaNR-UOArTPkWM7UCB0MeUPZ1wnA0Yv8DkbkwTu7j0wqQjA3cwnJBMFQB_yHwGuhZz5_RaBVjpnZ9wi0vDV-cwguEJWx6xSALkBvvxVY1FKtnAJr70ahxu8OwYvQysdCsyKoVQtizFvI-Ry5Qbis7CjOnwRS5iCdRZEXEIXuyN1PrGEmbk3ysX9CJsRLgPO8qrtuHxOf-eiRE6-WEUa8oTj5z36ZLe40Lw"
+              onPlay={() => setIsPlaying(true)}
+              onPause={() => setIsPlaying(false)}
+              onTimeUpdate={handleTimeUpdate}
+              onLoadedMetadata={handleLoadedMetadata}
+              onClick={togglePlay}
+              className="w-full h-full object-cover object-center cursor-pointer"
             />
 
             {/* Subtle Warm Cinematic Vignette Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-sanctuary-darkOlive/80 via-transparent to-sanctuary-darkOlive/30 pointer-events-none"></div>
 
             {/* Top Badges Overlay */}
-            <div className="absolute top-6 inset-x-6 flex items-center justify-between pointer-events-none">
+            <div className="absolute top-6 inset-x-6 flex items-center justify-between pointer-events-none z-10">
               <div className="glass-pill px-4 py-1.5 rounded-full text-[10px] tracking-[0.24em] uppercase text-sanctuary-darkOlive font-semibold shadow-xs backdrop-blur-md">
                 ✦ 4K ULTRA HD · CINEMATIC
               </div>
               <div className="glass-pill px-4 py-1.5 rounded-full text-[10px] tracking-[0.2em] uppercase text-sanctuary-bronze font-mono shadow-xs backdrop-blur-md">
-                12:40 MIN · VINYASA PRANA FLOW
+                {formatTime(duration || 120)} MIN · VINYASA PRANA FLOW
               </div>
             </div>
 
-            {/* Central Elegant Play Button */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <button
-                onClick={togglePlay}
-                aria-label={isPlaying ? "Pause Video" : "Play Sanctuary Video"}
-                className="w-20 h-20 rounded-full bg-sanctuary-cream/90 backdrop-blur-md border border-sanctuary-sandstone text-sanctuary-darkOlive flex items-center justify-center shadow-2xl hover:scale-110 hover:bg-sanctuary-cream transition-all duration-300 group-hover:shadow-sanctuary-terracotta/20 cursor-pointer"
-              >
-                <span className="material-symbols-outlined text-4xl text-sanctuary-terracotta ml-1">
-                  {isPlaying ? 'pause' : 'play_arrow'}
-                </span>
-              </button>
-            </div>
+            {/* Central Elegant Play Button (Visible when paused) */}
+            {!isPlaying && (
+              <div className="absolute inset-0 flex items-center justify-center z-10">
+                <button
+                  onClick={togglePlay}
+                  aria-label="Play Sanctuary Video"
+                  className="w-20 h-20 rounded-full bg-sanctuary-cream/90 backdrop-blur-md border border-sanctuary-sandstone text-sanctuary-darkOlive flex items-center justify-center shadow-2xl hover:scale-110 hover:bg-sanctuary-cream transition-all duration-300 group-hover:shadow-sanctuary-terracotta/20 cursor-pointer"
+                >
+                  <span className="material-symbols-outlined text-4xl text-sanctuary-terracotta ml-1">
+                    play_arrow
+                  </span>
+                </button>
+              </div>
+            )}
 
             {/* Video Bottom Controls Bar */}
-            <div className="absolute bottom-0 inset-x-0 p-6 bg-gradient-to-t from-sanctuary-darkOlive/90 via-sanctuary-darkOlive/60 to-transparent flex flex-col gap-3">
+            <div className="absolute bottom-0 inset-x-0 p-6 bg-gradient-to-t from-sanctuary-darkOlive/90 via-sanctuary-darkOlive/60 to-transparent flex flex-col gap-3 z-20">
               {/* Scrubber Bar */}
               <div
                 onClick={handleSeek}
                 className="w-full bg-sanctuary-cream/30 h-1.5 rounded-full overflow-hidden cursor-pointer"
               >
                 <div
-                  className="bg-sanctuary-terracotta h-full rounded-full relative transition-all duration-150"
-                  style={{ width: `${progress}%` }}
+                  className="bg-sanctuary-terracotta h-full rounded-full relative transition-all duration-75"
+                  style={{ width: `${progressPercent}%` }}
                 >
                   <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-sanctuary-cream shadow-sm"></div>
                 </div>
@@ -96,8 +170,8 @@ export default function VideoSection() {
                 <div className="flex items-center space-x-4">
                   <button
                     onClick={togglePlay}
-                    aria-label="Play / Pause"
-                    className="hover:text-sanctuary-terracotta transition-colors cursor-pointer"
+                    aria-label={isPlaying ? 'Pause' : 'Play'}
+                    className="hover:text-sanctuary-terracotta transition-colors cursor-pointer flex items-center"
                   >
                     <span className="material-symbols-outlined text-xl">
                       {isPlaying ? 'pause' : 'play_arrow'}
@@ -105,15 +179,15 @@ export default function VideoSection() {
                   </button>
                   <button
                     onClick={toggleMute}
-                    aria-label="Mute / Volume"
-                    className="hover:text-sanctuary-terracotta transition-colors cursor-pointer"
+                    aria-label={isMuted ? 'Unmute' : 'Mute'}
+                    className="hover:text-sanctuary-terracotta transition-colors cursor-pointer flex items-center"
                   >
                     <span className="material-symbols-outlined text-xl">
                       {isMuted ? 'volume_off' : 'volume_up'}
                     </span>
                   </button>
                   <span className="text-[11px] font-mono tracking-wider text-sanctuary-cream/80">
-                    {isPlaying ? '05:12' : '04:48'} / 12:40
+                    {formatTime(currentTime)} / {formatTime(duration)}
                   </span>
                 </div>
                 <div className="flex items-center space-x-3">
@@ -121,10 +195,13 @@ export default function VideoSection() {
                     SURYA PRANA I
                   </span>
                   <button
+                    onClick={toggleFullscreen}
                     aria-label="Fullscreen"
-                    className="hover:text-sanctuary-terracotta transition-colors cursor-pointer"
+                    className="hover:text-sanctuary-terracotta transition-colors cursor-pointer flex items-center"
                   >
-                    <span className="material-symbols-outlined text-xl">fullscreen</span>
+                    <span className="material-symbols-outlined text-xl">
+                      {isFullscreen ? 'fullscreen_exit' : 'fullscreen'}
+                    </span>
                   </button>
                 </div>
               </div>
@@ -149,4 +226,3 @@ export default function VideoSection() {
     </section>
   );
 }
-
