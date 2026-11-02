@@ -56,28 +56,25 @@ export default function ContactSection() {
             {/* Direct Calling & WhatsApp Card */}
             <div className="bg-sanctuary-ivory rounded-3xl p-8 border-2 border-sanctuary-sandstone/60 shadow-lg relative overflow-hidden group hover:border-sanctuary-olive transition-colors">
               <div className="text-[10px] uppercase font-bold tracking-[0.24em] text-sanctuary-bronze mb-2">
-                DIRECT CONCIERGE LINE
+                SACRED SANCTUARY ATELIER
               </div>
 
               <div className="flex items-center space-x-4 mb-4">
                 <div className="w-12 h-12 rounded-full bg-sanctuary-olive text-sanctuary-cream flex items-center justify-center shadow-md">
-                  <span className="material-symbols-outlined text-2xl">call</span>
+                  <span className="material-symbols-outlined text-2xl">spa</span>
                 </div>
                 <div>
-                  <a 
-                    href="tel:+919105837321" 
-                    className="font-serif-luxury text-3xl sm:text-4xl font-bold text-[#1f1d1a] hover:text-sanctuary-terracotta transition-colors tracking-tight block"
-                  >
-                    +91 91058 37321
-                  </a>
-                  <p className="text-xs text-sanctuary-muted uppercase tracking-widest font-mono mt-0.5">
-                    Available: 06:00 AM – 08:30 PM IST
+                  <h3 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-[#1f1d1a] tracking-tight block">
+                    Prana &amp; Stillness
+                  </h3>
+                  <p className="text-xs text-sanctuary-terracotta uppercase tracking-widest font-mono mt-0.5 font-semibold">
+                    Ananda Sukhasana Sangha
                   </p>
                 </div>
               </div>
 
               <p className="text-xs text-sanctuary-charcoal/80 leading-relaxed mb-6 font-normal">
-                Direct hotline for consultations, studio bookings, private retreats, or immediate inquiries.
+                Dedicated sanctuary desk for personalized Ayurvedic consultations, private meditation retreats, and sacred space inquiries.
               </p>
 
               {/* Fast Action Buttons */}
@@ -87,16 +84,16 @@ export default function ContactSection() {
                   className="inline-flex items-center space-x-2 bg-sanctuary-olive hover:bg-sanctuary-darkOlive text-sanctuary-cream text-xs uppercase tracking-widest font-semibold px-5 py-2.5 rounded-full transition-all shadow-sm"
                 >
                   <span className="material-symbols-outlined text-base">call</span>
-                  <span>Call Us</span>
+                  <span>Connect Line</span>
                 </a>
                 <a
-                  href="https://wa.me/919105837321?text=Hello%20Xanso.Fitness%20Sanctuary,%20I%20would%20like%20to%20inquire%20about%20yoga%20classes."
+                  href="https://wa.me/919105837321?text=Namaste%20Xanso.Fitness%20Sanctuary,%20I%20would%20like%20to%20connect%20with%20the%20Prana%20%26%20Stillness%20Atelier."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center space-x-2 bg-sanctuary-cream hover:bg-white text-sanctuary-darkOlive border border-sanctuary-sandstone text-xs uppercase tracking-widest font-semibold px-5 py-2.5 rounded-full transition-all shadow-xs"
                 >
                   <span className="material-symbols-outlined text-base text-sanctuary-olive">chat</span>
-                  <span>WhatsApp</span>
+                  <span>WhatsApp Sangha</span>
                 </a>
               </div>
             </div>
@@ -220,3 +217,4 @@ export default function ContactSection() {
     </section>
   );
 }
+

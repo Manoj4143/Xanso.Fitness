@@ -19,10 +19,10 @@ export default function Footer() {
               <span>The Stone Colonnade, Jaipur Court</span>
             </div>
             <div className="flex items-center space-x-2 text-xs tracking-widest uppercase font-medium text-sanctuary-darkOlive">
-              <span className="material-symbols-outlined text-base text-sanctuary-terracotta">call</span>
-              <a href="tel:+919105837321" className="hover:text-sanctuary-terracotta transition-colors font-mono font-bold">
-                +91 91058 37321
-              </a>
+              <span className="material-symbols-outlined text-base text-sanctuary-terracotta">spa</span>
+              <span className="font-serif-luxury text-base italic font-semibold text-sanctuary-darkOlive">
+                Prana &amp; Stillness Atelier
+              </span>
             </div>
           </div>
 
