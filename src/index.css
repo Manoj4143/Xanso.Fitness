@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+@theme {
+  --color-sanctuary-ivory: #F7F2E9;
+  --color-sanctuary-cream: #FCF9F3;
+  --color-sanctuary-parchment: #EEE5D7;
+  --color-sanctuary-sandstone: #D4C0A7;
+  --color-sanctuary-border: #E3D7C5;
+  --color-sanctuary-olive: #394735;
+  --color-sanctuary-darkOlive: #292F25;
+  --color-sanctuary-terracotta: #B86A4B;
+  --color-sanctuary-bronze: #98744D;
+  --color-sanctuary-sage: #A7AD96;
+  --color-sanctuary-charcoal: #302D28;
+  --color-sanctuary-muted: #716B61;
+
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: #302D28;
+  background-color: #F7F2E9;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-serif-luxury {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+.arch-frame {
+  border-radius: 280px 280px 32px 32px;
+}
+
+.ghost-watermark {
+  user-select: none;
+  pointer-events: none;
+  letter-spacing: 0.18em;
+}
+
+.glass-pill {
+  background: rgba(252, 249, 243, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(212, 192, 167, 0.45);
+}
+
